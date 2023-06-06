@@ -1,0 +1,59 @@
+
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+
+
+<script type="text/javascript">
+  
+   $(document).on('click', '.plan-payment', function(e) {
+
+
+            // Prevent the default button click behavior
+            e.preventDefault();
+
+
+                let planId = $(this).data('name')
+                let amount = $(this).data('price')
+                var options = {
+                    key: 'rzp_test_1spO8LVd5ENWfO', // Replace with your Razorpay key ID
+                    amount: amount*100, // The amount to be paid (in paise or smallest currency unit)
+                    currency: 'INR', // The currency code (e.g., INR for Indian Rupees)
+                    name: 'Resume Builder', // The name of your website or store
+                    description: 'Resume Builder', // The description of the payment
+                    handler: function(response) {
+                        // Handle the payment success or failure response here
+                        $.ajax({
+                            type: "POST",
+                            url: "<?php echo site_url('home/purchase_plan_professionl_writing') ?>",
+                            data: {
+                                transaction_id: response.razorpay_payment_id,
+                                plan_id: planId
+                            },
+                            dataType: "json",
+                            success: function (response) {
+                                if(response.status) {
+                                    Swal.fire(response.message, '', 'success')
+                                    window.location.href = "<?php echo base_url('professional-writing') ?>"
+                                } else {
+                                    Swal.fire(response.message, '', 'error')
+                                }
+                            }
+                        });
+                    },
+                    prefill: {
+                        name: 'Sawan shakya', // Customer's full name
+                        email: 'sawan@example.com', // Customer's email address
+                        contact: '+1234567890' // Customer's contact number
+                    }
+                };
+                
+
+                // Create a new Razorpay instance and open the payment dialog
+                var rzp = new Razorpay(options);
+                rzp.open();
+
+            
+        })
+
+</script>
