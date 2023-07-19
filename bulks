@@ -1,0 +1,26 @@
+
+function send_notificaion($mobile='',$otp='',$name=''){
+    
+    $curl = curl_init();
+
+    curl_setopt_array($curl, array(
+    CURLOPT_URL => 'https://sms.indiasms.com/SMSApi/send',
+    CURLOPT_RETURNTRANSFER => true,
+    CURLOPT_ENCODING => '',
+    CURLOPT_MAXREDIRS => 10,
+    CURLOPT_TIMEOUT => 0,
+    CURLOPT_FOLLOWLOCATION => true,
+    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+    CURLOPT_CUSTOMREQUEST => 'POST',
+    CURLOPT_POSTFIELDS => array('userid' => 'kadgconsulting','password' => 'ind123','mobile' => $mobile,'senderid' => 'KADGCO','dltEntityId' => '1701168666384525896','msg' => 'KADG '.$otp.' otp for login in KADG '.$name.' KADG CONSULTANCY SERVICES (OPC) PRIVATE LIMITED','sendMethod' => 'quick','msgType' => 'text','dltTemplateId' => '1707168959704861186','output' => 'json','duplicatecheck' => 'true'),
+    CURLOPT_HTTPHEADER => array(
+        'Cookie: SERVERID=webC1'
+    ),
+    ));
+
+    $response1 = curl_exec($curl);
+  //  print_r($response1);die;
+
+    curl_close($curl);
+
+}
